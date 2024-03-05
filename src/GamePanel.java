@@ -9,32 +9,28 @@ import java.util.Scanner;
 public class GamePanel extends JPanel implements Runnable {
     static GameState state = new GameState();
     static Scenario currScenario = state.gameArray.get(0);
+    static Scenario prevNode = state.gameArray.get(0);
+
     static KeyInputHandler keyH = new KeyInputHandler();
+
     @Override
-    public void run(){
-        // window.setResizable(false);
-        // window.setTitle("Oregon Trail");
-        // GamePanel gamePanel = new GamePanel();
-        // window.add(gamePanel);
-        // window.pack();
+    public void run() {
 
-        // window.setLocationRelativeTo(null);
-        // window.setVisible(true);
         Scanner scan = new Scanner(System.in);
-        //resets game state since its defnined on class and tests makes static references
 
-        //checks if there is a win state
+        // checks if there is a win state
         while (currScenario != null) {
-            // tells thread to sleep for 100 ms to reduce stress, the 100 ms is arbritrary i just chose it
+            // tells thread to sleep for 100 ms to reduce stress, the 100 ms is arbritrary i
+            // just chose it
 
             handleTurn(scan);
         }
-        //checks if a player cant move and its their turn. This is done since techincally there is end states when neither player can move
+        // checks if a player cant move and its their turn. This is done since
+        // techincally there is end states when neither player can move
         scan.close();
         return;
     }
 
-    
     // uses try catch block that kees executing until a return condition is met
     public static int promptNumberReadLine(Scanner scan, String prompt, int max) {
         while (true) { // continuously loop until valid input is received
@@ -63,6 +59,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
+
     public static void promptContinue(Scanner scan, String prompt) {
         animateText(prompt, 10);
         System.out.print("Press 'Enter' to continue...");
@@ -71,27 +68,37 @@ public class GamePanel extends JPanel implements Runnable {
         System.out.print("\033[1A\033[K");
 
     }
-    
+
     public static void handleTurn(Scanner scan) {
         clearConsole();
 
         // checks if the current player is unable to move
         promptContinue(scan, currScenario.getIntroText());
-        animateText("\n" + "\n" + currScenario.getHeaderText() +  "\n" + "\n", 10);
+        animateText("\n" + "\n" + currScenario.getHeaderText() + "\n" + "\n", 10);
 
-        for(int i = 0; i < currScenario.getChoicesLength(); i++){
+        for (int i = 0; i < currScenario.getChoicesLength(); i++) {
             System.out.println(i + 1 + ": " + currScenario.getOneChoice(i));
         }
-        int number = promptNumberReadLine(scan, "please enter your move (1-" + currScenario.getChoicesLength() + "): ", currScenario.getChoicesLength());
-        currScenario = state.gameArray.get(currScenario.getPointer(number));
-        // i change the turn and keep track since the program allows one last move to be called even if the other player already lost
+        int number = promptNumberReadLine(scan, "please enter your move (1-" + currScenario.getChoicesLength() + "): ",
+                currScenario.getChoicesLength());
+        Scenario temp = currScenario;
+        if (currScenario.getPointer(number) == -1) {
+            currScenario = prevNode;
+        } else {
+            currScenario = state.gameArray.get(currScenario.getPointer(number));
+        }
+        prevNode = temp;
+        // i change the turn and keep track since the program allows one last move to be
+        // called even if the other player already lost
 
     }
+
     public static void clearConsole() {
-        System.out.print("\033[H\033[2J");  
+        System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-    public static void animateText(String text, long delay) {   
+
+    public static void animateText(String text, long delay) {
         for (char character : text.toCharArray()) {
             System.out.print(character); // print character without a newline
             try {
@@ -103,5 +110,5 @@ public class GamePanel extends JPanel implements Runnable {
         }
         System.out.println(); // Move to the next line after the text is printed
     }
-    
+
 }
