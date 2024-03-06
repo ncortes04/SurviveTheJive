@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class GamePanel extends JPanel implements Runnable {
     static GameState state = new GameState();
-    static Scenario currScenario = state.gameArray.get(0);
-    static Scenario prevNode = state.gameArray.get(0);
+    static Scenario currScenario = state.gameArray.get(30);
+    static Scenario prevNode = state.gameArray.get(30);
 
     static KeyInputHandler keyH = new KeyInputHandler();
 
