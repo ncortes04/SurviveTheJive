@@ -1,16 +1,12 @@
 import javax.swing.JPanel;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.Scanner;
 
 public class GamePanel extends JPanel implements Runnable {
     static GameState state = new GameState();
     static Scenario currScenario = state.gameArray.get(30);
     static Scenario prevNode = state.gameArray.get(30);
-
+    static int called = 0;
     static KeyInputHandler keyH = new KeyInputHandler();
 
     @Override
@@ -18,15 +14,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         Scanner scan = new Scanner(System.in);
 
-        // checks if there is a win state
         while (currScenario != null) {
-            // tells thread to sleep for 100 ms to reduce stress, the 100 ms is arbritrary i
-            // just chose it
-
             handleTurn(scan);
         }
-        // checks if a player cant move and its their turn. This is done since
-        // techincally there is end states when neither player can move
+
         scan.close();
         return;
     }
@@ -34,13 +25,18 @@ public class GamePanel extends JPanel implements Runnable {
     // uses try catch block that kees executing until a return condition is met
     public static int promptNumberReadLine(Scanner scan, String prompt, int max) {
         while (true) { // continuously loop until valid input is received
-
+            // this just fix if the program exits while scanner is active. it will spam the prompt
+            // this makes it so if its called more than once then exit
+            called ++;
+            if (called > 1) {
+                System.exit(0);
+            }
             System.out.print(prompt);
-
+            called = 0;
             // check if there's another line of input
             if (scan.hasNext()) {
                 String inputLine = scan.nextLine(); // read the whole line
-
+         
                 try {
                     int temp = Integer.parseInt(inputLine); // attempt to parse the integer
 
@@ -49,7 +45,6 @@ public class GamePanel extends JPanel implements Runnable {
                         return temp; // return the valid input
                     } else {
                         // if input is an integer nut not within the valid range
-
                         System.out.println("That was not a valid number! Please try again.");
                     }
                 } catch (NumberFormatException e) {
@@ -72,7 +67,6 @@ public class GamePanel extends JPanel implements Runnable {
     public static void handleTurn(Scanner scan) {
         clearConsole();
 
-        // checks if the current player is unable to move
         promptContinue(scan, currScenario.getIntroText());
         animateText("\n" + "\n" + currScenario.getHeaderText() + "\n" + "\n", 10);
 
@@ -81,6 +75,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         int number = promptNumberReadLine(scan, "please enter your move (1-" + currScenario.getChoicesLength() + "): ",
                 currScenario.getChoicesLength());
+  
         Scenario temp = currScenario;
         if (currScenario.getPointer(number) == -1) {
             currScenario = prevNode;
@@ -108,7 +103,7 @@ public class GamePanel extends JPanel implements Runnable {
                 System.err.println("Thread was interrupted, failed to complete operation");
             }
         }
-        System.out.println(); // Move to the next line after the text is printed
+        System.out.println(); // move to the next line after the text is printed
     }
 
 }

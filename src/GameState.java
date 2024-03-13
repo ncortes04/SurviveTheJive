@@ -5,10 +5,10 @@ public class GameState {
 
     public GameState(){
         gameArray = new ArrayList<>(); // Initialize the array list
-        populateState(); // Populate game state upon instance creation
+        populateState(); // populate game state upon instance creation
     }
 
-    private void populateState(){ // Now a non-static method
+    private void populateState(){ 
         for(int i = 0; i < GameValues.introTexts.length; i++){
             Scenario tempScenario = new Scenario(GameValues.introTexts[i], GameValues.questions[i], GameValues.choices[i], GameValues.metaDataChoices[i]);
             gameArray.add(tempScenario);
