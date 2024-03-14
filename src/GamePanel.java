@@ -4,8 +4,9 @@ import java.util.Scanner;
 
 public class GamePanel extends JPanel implements Runnable {
     static GameState state = new GameState();
-    static Scenario currScenario = state.gameArray.get(30);
-    static Scenario prevNode = state.gameArray.get(30);
+    static Scenario currScenario = state.gameArray.get(2);
+    static Scenario prevNode = currScenario;
+
     static int called = 0;
     static KeyInputHandler keyH = new KeyInputHandler();
 
@@ -15,9 +16,9 @@ public class GamePanel extends JPanel implements Runnable {
         Scanner scan = new Scanner(System.in);
 
         while (currScenario != null) {
+            // just chose it
             handleTurn(scan);
         }
-
         scan.close();
         return;
     }
@@ -65,7 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public static void handleTurn(Scanner scan) {
-        clearConsole();
+        // clearConsole();
 
         promptContinue(scan, currScenario.getIntroText());
         animateText("\n" + "\n" + currScenario.getHeaderText() + "\n" + "\n", 10);
@@ -79,6 +80,8 @@ public class GamePanel extends JPanel implements Runnable {
         Scenario temp = currScenario;
         if (currScenario.getPointer(number) == -1) {
             currScenario = prevNode;
+        } else if (currScenario.getPointer(number) == -2) {
+            System.out.println("l;kdjalkdjasldksjaldkjasldkiajldkjs");
         } else {
             currScenario = state.gameArray.get(currScenario.getPointer(number));
         }
@@ -99,7 +102,7 @@ public class GamePanel extends JPanel implements Runnable {
             try {
                 Thread.sleep(delay); // wait for 'delay' milliseconds before printing the next character
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // Restore the interrupted status
+                Thread.currentThread().interrupt(); // restore the interrupted status
                 System.err.println("Thread was interrupted, failed to complete operation");
             }
         }
