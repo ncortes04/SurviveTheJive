@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class GamePanel extends JPanel implements Runnable {
     static GameState state = new GameState();
-    static Scenario currScenario = state.gameArray.get(30);
-    static Scenario prevNode = state.gameArray.get(30);
+    static Scenario currScenario = state.gameArray.get(2);
+    static Scenario prevNode = currScenario;
 
     static KeyInputHandler keyH = new KeyInputHandler();
 
@@ -18,15 +18,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         Scanner scan = new Scanner(System.in);
 
-        // checks if there is a win state
         while (currScenario != null) {
-            // tells thread to sleep for 100 ms to reduce stress, the 100 ms is arbritrary i
             // just chose it
-
             handleTurn(scan);
         }
-        // checks if a player cant move and its their turn. This is done since
-        // techincally there is end states when neither player can move
         scan.close();
         return;
     }
@@ -70,9 +65,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public static void handleTurn(Scanner scan) {
-        clearConsole();
+        // clearConsole();
 
-        // checks if the current player is unable to move
         promptContinue(scan, currScenario.getIntroText());
         animateText("\n" + "\n" + currScenario.getHeaderText() + "\n" + "\n", 10);
 
@@ -84,6 +78,8 @@ public class GamePanel extends JPanel implements Runnable {
         Scenario temp = currScenario;
         if (currScenario.getPointer(number) == -1) {
             currScenario = prevNode;
+        } else if (currScenario.getPointer(number) == -2) {
+            System.out.println("l;kdjalkdjasldksjaldkjasldkiajldkjs");
         } else {
             currScenario = state.gameArray.get(currScenario.getPointer(number));
         }
@@ -104,11 +100,11 @@ public class GamePanel extends JPanel implements Runnable {
             try {
                 Thread.sleep(delay); // wait for 'delay' milliseconds before printing the next character
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // Restore the interrupted status
+                Thread.currentThread().interrupt(); // restore the interrupted status
                 System.err.println("Thread was interrupted, failed to complete operation");
             }
         }
-        System.out.println(); // Move to the next line after the text is printed
+        System.out.println(); // move to the next line after the text is printed
     }
 
 }
