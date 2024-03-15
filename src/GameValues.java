@@ -1,6 +1,12 @@
+import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+
 public class GameValues {
         // intro text giving a breif description of what happened
         // ACTION NODES 3,6,9,16,19,20,25,33,34
+        Map<Integer, List<String>> actionsMap = new HashMap<>();
+
         public static String[] introTexts = {
                         "You are walking through the forest and stumble upon a fork in the road.", // Node 1
                         "You decide to go left and start climbing the hill. After a few minutes, you reach the top and find an old tower.", // Node
@@ -180,4 +186,97 @@ public class GameValues {
                         { { 56, 57, 58, 59 }, { 3, 1, 4, 2 } }, // Node 38
                         { { 60, 61, 62, 0 }, { 3, 3, 3, 1 } } // Node 39
         };
+        public static String[][] deathScenarios = {
+                        {}, // Node 1: Initial choice, no direct death scenario
+                        { "While entering the tower, a hidden trapdoor opens beneath you, plummeting you into darkness.",
+                                        "The tower collapses as you step inside, buried under rubble." }, // Node 2
+                        { "The chest explodes upon opening, engulfing you in flames.",
+                                        "As you open the chest, poisonous gas releases, suffocating you." }, // Node 3
+                        { "The boat capsizes in strong currents, and you drown.",
+                                        "A monstrous creature from below drags the boat underwater." }, // Node 4
+                        { "The staircase crumbles under your feet, sending you falling to your demise.",
+                                        "A spectral guardian of the tower strikes you down for trespassing." }, // Node
+                                                                                                                // 5
+                        {}, // Node 6: Finding a map, less direct risk here
+                        { "You're swept away by a sudden tidal wave while exploring the island.",
+                                        "Quicksand surrounds the island, trapping you as you step ashore." }, // Node 7
+                        {}, // Node 8: Observing stars, less inherent risk
+                        {}, // Node 9: Finding treasure, less inherent risk
+                        { "The cave collapses as you enter, trapping you inside.",
+                                        "The glowing crystals explode when touched, fatally wounding you." }, // Node 10
+                        {}, // Node 11: Discovering a constellation, less inherent risk
+                        {}, // Node 12: Becoming wealthy, less inherent risk
+                        { "The dragon awakens and incinerates you with a fiery breath.",
+                                        "Trying to sneak past the dragon, you accidentally step on its tail, prompting a deadly retaliation." }, // Node
+                                                                                                                                                 // 13
+                        {}, // Node 14: Gaining fame, less inherent risk
+                        {}, // Node 15: Making donations, less inherent risk
+                        { "The hoard is cursed; touching the gold turns you to stone.",
+                                        "As you grab the gold, the cave begins to shake violently, sealing the exit forever." }, // Node
+                                                                                                                                 // 16
+                        { "You're ensnared by magical vines that strangle you.",
+                                        "A cursed faerie misleads you deeper into the forest, where you're lost forever." }, // Node
+                                                                                                                             // 17
+                        { "The talking tree turns out to be a malevolent spirit that traps your soul.",
+                                        "As you seek wisdom, a hidden guardian deems you unworthy and strikes you down." }, // Node
+                                                                                                                            // 18
+                        { "While helping the elves, you're caught in a deadly ambush.",
+                                        "A mystical barrier erected to protect the village malfunctions and vaporizes you." }, // Node
+                                                                                                                               // 19
+                        { "The artifact unleashes a curse, consuming your life force.",
+                                        "Attempting to use the artifact, you accidentally summon a demon that claims your soul." }, // Node
+                                                                                                                                    // 20
+                        { "One path leads to a spectral bear that mauls you.",
+                                        "Another path ensnares you in an eternal mist from which there's no escape." }, // Node
+                                                                                                                        // 21
+                        { "The phoenix turns into fire and burns you to ashes as you try to ride it.",
+                                        "Flying too high, you fall from the phoenix's back to your death." }, // Node 22
+                        { "A cursed book in the library seals your fate, trapping you in its pages forever.",
+                                        "The library's guardian, angered by your disturbance, eliminates you." }, // Node
+                                                                                                                  // 23
+                        { "The secret passage leads to a room filled with toxic gas.",
+                                        "An ancient trap is triggered, shooting arrows that pierce through you." }, // Node
+                                                                                                                    // 24
+                        { "Touching the crystal sets off an explosion, decimating the chamber.",
+                                        "The crystal's energy drains your life, leaving you a husk." }, // Node 25
+                        { "The sage's lessons are too potent, overwhelming your mind and shattering your consciousness.",
+                                        "A test from the sage goes awry, resulting in fatal consequences." }, // Node 26
+                        { "Stepping through the portal, you're disintegrated by unstable energies.",
+                                        "The other world is inhospitable, and you perish instantly upon arrival." }, // Node
+                                                                                                                     // 27
+                        { "Drinking from the pond turns you into a stone statue.",
+                                        "The pond's guardian, a water nymph, drowns you for disturbing the peace." }, // Node
+                                                                                                                      // 28
+                        { "The golem, unable to find its creator, self-destructs in despair, taking you with it.",
+                                        "Leading the golem, you both fall into a hidden pit with no escape." }, // Node
+                                                                                                                // 29
+                        { "Picking a golden flower alerts a guardian beast, which attacks you.",
+                                        "The garden is a mirage, leading you into a deadly swamp." }, // Node 30
+                        { "Time in the glade moves differently; you age centuries in moments, turning to dust.",
+                                        "A fae creature in the glade ensnares you in a dream you never wake from." }, // Node
+                                                                                                                      // 31
+                        { "Choosing the lantern, you're led to a bottomless pit.",
+                                        "The cloak is cursed, suffocating you as it tightens around your neck." }, // Node
+                                                                                                                   // 32
+                        { "Searching for the artifact pieces, you're caught in an eternal time loop.",
+                                        "Disturbing the artifact's rest awakens an ancient curse that petrifies you." }, // Node
+                                                                                                                         // 33
+                        { "The sword is cursed, turning its wielder into stone.",
+                                        "The potion is poison, killing you as you take a sip." }, // Node 34
+                        { "Failing the Sphinx's riddle, you're devoured as punishment.",
+                                        "The library collapses as you bypass the Sphinx, buried in knowledge." }, // Node
+                                                                                                                  // 35
+                        { "Attempting to harness the storm, you're struck by lightning.",
+                                        "Observing from a distance, a stray bolt finds you, ending your journey." }, // Node
+                                                                                                                     // 36
+                        { "Choosing Winter, you're frozen in an unending blizzard.",
+                                        "Summer's path leads to a desert where you perish from the heat." }, // Node 37
+                        { "Seeking knowledge, a forbidden truth drives you mad.",
+                                        "In pursuit of power, you're consumed by your own ambition, destroying yourself." }, // Node
+                                                                                                                             // 38
+                        { "Offering a memory, you forget how to breathe.",
+                                        "A dream tribute traps you in a nightmare from which there's no awakening." }, // Node
+                                                                                                                       // 39
+        };
+
 }

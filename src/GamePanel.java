@@ -1,16 +1,14 @@
 import javax.swing.JPanel;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class GamePanel extends JPanel implements Runnable {
     static GameState state = new GameState();
     static Scenario currScenario = state.gameArray.get(2);
     static Scenario prevNode = currScenario;
-
+    static Player player = new Player();
+    static int called = 0;
     static KeyInputHandler keyH = new KeyInputHandler();
 
     @Override
@@ -29,9 +27,15 @@ public class GamePanel extends JPanel implements Runnable {
     // uses try catch block that kees executing until a return condition is met
     public static int promptNumberReadLine(Scanner scan, String prompt, int max) {
         while (true) { // continuously loop until valid input is received
-
+            // this just fix if the program exits while scanner is active. it will spam the
+            // prompt
+            // this makes it so if its called more than once then exit
+            called++;
+            if (called > 1) {
+                System.exit(0);
+            }
             System.out.print(prompt);
-
+            called = 0;
             // check if there's another line of input
             if (scan.hasNext()) {
                 String inputLine = scan.nextLine(); // read the whole line
@@ -44,7 +48,6 @@ public class GamePanel extends JPanel implements Runnable {
                         return temp; // return the valid input
                     } else {
                         // if input is an integer nut not within the valid range
-
                         System.out.println("That was not a valid number! Please try again.");
                     }
                 } catch (NumberFormatException e) {
@@ -65,7 +68,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public static void handleTurn(Scanner scan) {
-        // clearConsole();
+        clearConsole();
 
         promptContinue(scan, currScenario.getIntroText());
         animateText("\n" + "\n" + currScenario.getHeaderText() + "\n" + "\n", 10);
@@ -76,10 +79,14 @@ public class GamePanel extends JPanel implements Runnable {
         int number = promptNumberReadLine(scan, "please enter your move (1-" + currScenario.getChoicesLength() + "): ",
                 currScenario.getChoicesLength());
         Scenario temp = currScenario;
+        if (player.karma > 1) {
+            handleDeath(scan);
+            return;
+        }
         if (currScenario.getPointer(number) == -1) {
             currScenario = prevNode;
-        } else if (currScenario.getPointer(number) == -2) {
-            System.out.println("l;kdjalkdjasldksjaldkjasldkiajldkjs");
+        } else if (currScenario.getPointer(number) == -2) { // this is opening chests
+            promptContinue(scan, player.resources.getRandomResource());
         } else {
             currScenario = state.gameArray.get(currScenario.getPointer(number));
         }
@@ -87,6 +94,13 @@ public class GamePanel extends JPanel implements Runnable {
         // i change the turn and keep track since the program allows one last move to be
         // called even if the other player already lost
 
+    }
+
+    public static void handleDeath(Scanner scan) {
+        promptContinue(scan, currScenario.getRandomDeathScenarios());
+        animateText("GAME OVER!!", 10);
+
+        currScenario = null;
     }
 
     public static void clearConsole() {
