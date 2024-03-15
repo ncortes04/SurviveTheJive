@@ -1,23 +1,27 @@
 public class Player {
     int karma;
+    Resources resources;
 
     public Player() {
         this.karma = 0;
+        this.resources = new Resources();
     }
 
-    public Player(int karma){
+    public Player(int karma) {
         this.karma = karma;
     }
-    public void increaseKarma(){
-        if (karma > 99){
+
+    public void increaseKarma() {
+        if (karma > 99) {
             return;
         }
-        this.karma ++;
+        this.karma++;
     }
-    public void decreaseKarma(){
-        if (karma <= 0){
+
+    public void decreaseKarma() {
+        if (karma <= 0) {
             return;
         }
-        this.karma --;
+        this.karma--;
     }
 }
