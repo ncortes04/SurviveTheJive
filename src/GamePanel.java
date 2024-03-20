@@ -2,24 +2,30 @@ import javax.swing.JPanel;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class GamePanel extends JPanel implements Runnable {
     static GameState state = new GameState();
-    static Scenario currScenario = state.gameArray.get(2);
-    static Scenario prevNode = currScenario;
+    static Scenario currScenario = state.gameArray.get(0);
+    static Stack<Scenario> prevNodes = new Stack<>();
     static Player player = new Player();
     static int called = 0;
-    static KeyInputHandler keyH = new KeyInputHandler();
+    static boolean isWin = false;
 
     @Override
     public void run() {
-
+        prevNodes.push(currScenario);
         Scanner scan = new Scanner(System.in);
 
         while (currScenario != null) {
             // just chose it
             handleTurn(scan);
         }
+        if (!isWin) {
+            return;
+        }
+        System.out.println("You have Won!!");
+
         scan.close();
         return;
     }
@@ -69,7 +75,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     public static void handleTurn(Scanner scan) {
         clearConsole();
-
+        System.out.println("Rope: " + (player.resources.isRope() ? "1 " : "0 ") + " | Sword: "
+                + (player.resources.isSword() ? "1 " : "0 ") + "| Camp Supplies: "
+                + (player.resources.isCampSupplies() ? "1 " : "0 ") + "| Raft: "
+                + (player.resources.isRaft() ? "1 " : "0 ") + "\t" + "Karma: " + player.karma + "\n");
         promptContinue(scan, currScenario.getIntroText());
         animateText("\n" + "\n" + currScenario.getHeaderText() + "\n" + "\n", 10);
 
@@ -79,24 +88,32 @@ public class GamePanel extends JPanel implements Runnable {
         int number = promptNumberReadLine(scan, "please enter your move (1-" + currScenario.getChoicesLength() + "): ",
                 currScenario.getChoicesLength());
         Scenario temp = currScenario;
-        if (player.karma > 1) {
-            handleDeath(scan);
+        if (player.karma >= 2 && currScenario.hasDeathScenarios()) {
+            if (1 != 2) {
+                handleDeath(scan, number - 1);
+            }
             return;
         }
-        if (currScenario.getPointer(number) == -1) {
-            currScenario = prevNode;
-        } else if (currScenario.getPointer(number) == -2) { // this is opening chests
-            promptContinue(scan, player.resources.getRandomResource());
+        int pointerToNext = currScenario.getPointer(number);
+        if (pointerToNext == -1) {
+            currScenario = prevNodes.pop();
+        } else if (pointerToNext == -2) { // this is opening chests
+            if (player.isVisited(pointerToNext)) {
+                promptContinue(scan, "The Chest is Empty");
+            } else {
+                promptContinue(scan, player.resources.getRandomResource());
+                player.addToVisited(pointerToNext);
+            }
+            currScenario = prevNodes.pop();
         } else {
-            currScenario = state.gameArray.get(currScenario.getPointer(number));
+            currScenario = state.gameArray.get(pointerToNext);
+            prevNodes.push(temp);
         }
-        prevNode = temp;
-        // i change the turn and keep track since the program allows one last move to be
-        // called even if the other player already lost
+        player.increaseKarma();
 
     }
 
-    public static void handleDeath(Scanner scan) {
+    public static void handleDeath(Scanner scan, int index) {
         promptContinue(scan, currScenario.getRandomDeathScenarios());
         animateText("GAME OVER!!", 10);
 

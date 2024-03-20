@@ -7,6 +7,18 @@ public class Scenario {
     String[] choices;
     String[] deathScenarios;
     int[][] metaData;
+    String survivalText;
+    int requiredItem = -1;
+
+    public Scenario(String introText, String headerText, String[] choices, int[][] metaData, String[] deathScenarios,
+            int requiredItem, String survivalText) {
+        this.introText = introText;
+        this.headerText = headerText;
+        this.choices = choices;
+        this.deathScenarios = deathScenarios;
+        this.metaData = metaData;
+        this.requiredItem = requiredItem;
+    }
 
     public Scenario(String introText, String headerText, String[] choices, int[][] metaData, String[] deathScenarios) {
         this.introText = introText;
@@ -18,6 +30,13 @@ public class Scenario {
 
     public String getHeaderText() {
         return headerText;
+    }
+
+    public boolean doesPlayerHaveitem(Player player) {
+        if (this.requiredItem == -1) {
+            return true;
+        }
+        return player.resources.getItemByIndex(this.requiredItem);
     }
 
     public void setHeaderText(String headerText) {
@@ -72,6 +91,10 @@ public class Scenario {
         this.deathScenarios = deathScenarios;
     }
 
+    public boolean hasDeathScenarios() {
+        return this.deathScenarios.length != 0;
+    }
+
     public int[][] getMetaData() {
         return metaData;
     }
@@ -79,22 +102,5 @@ public class Scenario {
     public void setMetaData(int[][] metaData) {
         this.metaData = metaData;
     }
-
-    // public static Scenario getDummyScenario() {
-    // List<String> optionHeaders = new ArrayList<>();
-    // optionHeaders.add("This is a test header");
-    // optionHeaders.add("This is a test header");
-    // optionHeaders.add("This is a test header");
-    // optionHeaders.add("This is a test header");
-    // List<Integer> pointers = new ArrayList<>();
-    // pointers.add(1);
-    // pointers.add(2);
-    // pointers.add(3);
-    // pointers.add(4);
-
-    // return new Scenario("This is a test intro text", "header text header text
-    // header text", optionHeaders,
-    // pointers);
-    // }
 
 }
