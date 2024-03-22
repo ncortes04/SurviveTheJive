@@ -31,6 +31,7 @@ public class Resources {
         this.raft = raft;
 
     }
+        // methods are pretty self explanitory, getters, setters, and useful functions
 
     public boolean getItemByIndex(int i) {
         return itemArray.get(i);

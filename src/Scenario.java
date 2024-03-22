@@ -7,17 +7,18 @@ public class Scenario {
     String[] choices;
     String[] deathScenarios;
     int[][] metaData;
-    String survivalText;
     int requiredItem = -1;
+    String[] outcomes;
+    int index;
 
-    public Scenario(String introText, String headerText, String[] choices, int[][] metaData, String[] deathScenarios,
-            int requiredItem, String survivalText) {
+    public Scenario(String introText, String headerText, String[] choices, int[][] metaData, String[] deathScenarios, String[] outcomes, int index) {
         this.introText = introText;
         this.headerText = headerText;
         this.choices = choices;
         this.deathScenarios = deathScenarios;
         this.metaData = metaData;
-        this.requiredItem = requiredItem;
+        this.outcomes = outcomes;
+        this.index = index;
     }
 
     public Scenario(String introText, String headerText, String[] choices, int[][] metaData, String[] deathScenarios) {
@@ -27,7 +28,7 @@ public class Scenario {
         this.deathScenarios = deathScenarios;
         this.metaData = metaData;
     }
-
+    // methods are pretty self explanitory, getters, setters, and useful functions
     public String getHeaderText() {
         return headerText;
     }
@@ -58,7 +59,9 @@ public class Scenario {
     public String getOneChoice(int i) {
         return this.choices[i];
     }
-
+    public int getIndex(){
+        return this.index;
+    }
     public int getWeight(int i) {
         return metaData[1][i - 1];
     }
@@ -101,6 +104,27 @@ public class Scenario {
 
     public void setMetaData(int[][] metaData) {
         this.metaData = metaData;
+    }
+
+    public int getRequiredItem() {
+        return requiredItem;
+    }
+
+    public void setRequiredItem(int requiredItem) {
+        this.requiredItem = requiredItem;
+    }
+
+    public String[] getOutcomes() {
+        return outcomes;
+    }
+    public String getOutcome(int index) {
+        return outcomes[index - 1];
+    }
+    public boolean hasOutcome(int index) {
+        return index < this.outcomes.length;
+    }
+    public void setOutcomes(String[] outcomes) {
+        this.outcomes = outcomes;
     }
 
 }

@@ -3,6 +3,7 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 public class Main {
+    //game was orignally in a jframe but descided to make it console based
     public static void main(String[] args) throws Exception {
         // JFrame window = new JFrame();
         // window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

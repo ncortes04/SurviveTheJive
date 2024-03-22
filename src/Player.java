@@ -1,6 +1,7 @@
 import java.util.HashSet;
 
 public class Player {
+    // player class with resouorces, karma, and a visited set
     int karma;
     Resources resources;
     HashSet<Integer> visited = new HashSet<>();
@@ -13,12 +14,12 @@ public class Player {
     public Player(int karma) {
         this.karma = karma;
     }
-
-    public void increaseKarma() {
+        // methods are pretty self explanitory, getters, setters, and useful functions
+        public void increaseKarma() {
         if (karma > 99) {
             return;
         }
-        this.karma++;
+        this.karma += 5;
     }
 
     public void addToVisited(int index) {
@@ -40,9 +41,11 @@ public class Player {
         if (karma <= 0) {
             return;
         }
-        this.karma--;
+        this.karma -= 5;
     }
-
+    public int getVisitedCount(){
+        return this.visited.size();
+    }
     public void decreaseKarma(int amount) {
         if (karma <= 0) {
             return;
